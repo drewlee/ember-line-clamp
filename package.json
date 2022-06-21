@@ -27,10 +27,10 @@
   },
   "dependencies": {
     "ember-batcher": "^4.0.2",
-    "ember-cli-babel": "^7.13.2",
-    "ember-cli-htmlbars": "^5.3.1",
+    "ember-cli-babel": "^7.26.11",
+    "ember-cli-htmlbars": "^6.0.1",
     "ember-singularity": "^2.0.0",
-    "ember-test-selectors": "^5.0.0"
+    "ember-test-selectors": "^6.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
