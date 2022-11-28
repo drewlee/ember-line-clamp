@@ -1039,7 +1039,7 @@
     ember-cli-htmlbars "^5.7.1"
     ember-destroyable-polyfill "^2.0.3"
 
-"@ember/test-waiters@^3.0.0", "@ember/test-waiters@^3.0.2":
+"@ember/test-waiters@^3.0.0":
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/@ember/test-waiters/-/test-waiters-3.0.2.tgz#5b950c580a1891ed1d4ee64f9c6bacf49a15ea6f"
   integrity sha512-H8Q3Xy9rlqhDKnQpwt2pzAYDouww4TZIGSI1pZJhM7mQIGufQKuB0ijzn/yugA6Z+bNdjYp1HioP8Y4hn2zazQ==
@@ -1076,6 +1076,14 @@
     resolve-package-path "^4.0.1"
     semver "^7.3.5"
     typescript-memoize "^1.0.1"
+
+"@embroider/test-setup@^1.8.3":
+  version "1.8.3"
+  resolved "https://registry.yarnpkg.com/@embroider/test-setup/-/test-setup-1.8.3.tgz#445b9fe5a363ce50367ac2114750597f98d7806d"
+  integrity sha512-BCCbBG7UWkCw+cQ401Ip6LnqTRaQDeKImxR+e7Q4oP6H4EBj7p4iGR1z6fhMy4NNyXKPB6jk3bGa9bTiiNoEAw==
+  dependencies:
+    lodash "^4.17.21"
+    resolve "^1.20.0"
 
 "@embroider/util@^1.6.0":
   version "1.9.0"
@@ -3496,14 +3504,15 @@ ember-auto-import@^2.4.2, ember-auto-import@^2.4.3:
     typescript-memoize "^1.0.0-alpha.3"
     walk-sync "^3.0.0"
 
-"ember-batcher@https://github.com/mikrostew/ember-batcher#master":
-  version "4.0.2"
-  resolved "https://github.com/mikrostew/ember-batcher#6cbb9918a96d55a1c473fd79323bae4f9b26989c"
+ember-batcher@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/ember-batcher/-/ember-batcher-5.0.0.tgz#434dbaa8e441a4eb4b9c5dea21216f7cb7042d05"
+  integrity sha512-LOGrxT9ju32QmUWL8LvAKP44gkRGpV2QtZLDbgEpC+QVWsZpdoQjVo8JJjhYlKVy5uj8dO+1T6j+wSInA8Gyeg==
   dependencies:
-    "@ember/test-waiters" "^3.0.2"
+    "@ember/test-waiters" "^3.0.0"
     "@glimmer/env" "^0.1.7"
     ember-cli-babel "^7.26.11"
-    ember-cli-typescript "^5.2.1"
+    ember-cli-typescript "^4.2.1"
 
 ember-cli-babel-plugin-helpers@^1.0.0, ember-cli-babel-plugin-helpers@^1.1.1:
   version "1.1.1"
@@ -3673,10 +3682,10 @@ ember-cli-typescript@3.0.0:
     stagehand "^1.0.0"
     walk-sync "^2.0.0"
 
-ember-cli-typescript@^5.2.1:
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/ember-cli-typescript/-/ember-cli-typescript-5.2.1.tgz#553030f1ce3e8958b8e4fc34909acd1218cb35f2"
-  integrity sha512-qqp5TAIuPHxHiGXJKL+78Euyhy0zSKQMovPh8sJpN/ZBYx0H90pONufHR3anaMcp1snVfx4B+mb9+7ijOik8ZA==
+ember-cli-typescript@^4.2.1:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/ember-cli-typescript/-/ember-cli-typescript-4.2.1.tgz#54d08fc90318cc986f3ea562f93ce58a6cc4c24d"
+  integrity sha512-0iKTZ+/wH6UB/VTWKvGuXlmwiE8HSIGcxHamwNhEC5x1mN3z8RfvsFZdQWYUzIWFN2Tek0gmepGRPTwWdBYl/A==
   dependencies:
     ansi-to-html "^0.6.15"
     broccoli-stew "^3.0.0"
