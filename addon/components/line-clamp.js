@@ -70,13 +70,13 @@ const HTML_ENTITIES_TO_CHARS = {
  *
  * @example
  * ```
- * {{line-clamp text="Some long text"}}
+ * <LineClamp @text="Some long text" />
  * ```
  *
  * @class LineClampComponent
  */
 export default class LineClampComponent extends Component {
-  @service unifiedEventHandler;
+  @service('unified-event-handler') unifiedEventHandler;
 
   /**
    * Text to truncate/clamp
