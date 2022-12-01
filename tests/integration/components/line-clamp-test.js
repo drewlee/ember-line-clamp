@@ -843,4 +843,43 @@ module('Integration | Component | line clamp', function (hooks) {
       .dom('[data-test-line-clamp-show-more-button]')
       .isFocused('show more button is focused');
   });
+
+  test('tag name is <div> by default', async function (assert) {
+    assert.expect(1);
+
+    await render(hbs`
+      <div style="width: 300px; font-size: 16px; font-family: sans-serif;">
+        <LineClamp
+          @text="helloworld helloworld helloworld"
+        />
+      </div>`);
+
+    const element = this.element;
+    const lineClampElement = element.querySelector('[data-test-line-clamp]');
+    assert.strictEqual(
+      lineClampElement.tagName,
+      'DIV',
+      'line-clamp element is <div>'
+    );
+  });
+
+  test('tag name is able to be changed', async function (assert) {
+    assert.expect(1);
+
+    await render(hbs`
+      <div style="width: 300px; font-size: 16px; font-family: sans-serif;">
+        <LineClamp
+          @text="helloworld helloworld helloworld"
+          @tagName="p"
+        />
+      </div>`);
+
+    const element = this.element;
+    const lineClampElement = element.querySelector('[data-test-line-clamp]');
+    assert.strictEqual(
+      lineClampElement.tagName,
+      'P',
+      'line-clamp element is <p> instead of <div>'
+    );
+  });
 });
