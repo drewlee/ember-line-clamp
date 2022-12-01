@@ -854,13 +854,7 @@ module('Integration | Component | line clamp', function (hooks) {
         />
       </div>`);
 
-    const element = this.element;
-    const lineClampElement = element.querySelector('[data-test-line-clamp]');
-    assert.strictEqual(
-      lineClampElement.tagName,
-      'DIV',
-      'line-clamp element is <div>'
-    );
+    assert.dom('[data-test-line-clamp]').hasTagName('div');
   });
 
   test('tag name is able to be changed', async function (assert) {
@@ -874,12 +868,6 @@ module('Integration | Component | line clamp', function (hooks) {
         />
       </div>`);
 
-    const element = this.element;
-    const lineClampElement = element.querySelector('[data-test-line-clamp]');
-    assert.strictEqual(
-      lineClampElement.tagName,
-      'P',
-      'line-clamp element is <p> instead of <div>'
-    );
+    assert.dom('[data-test-line-clamp]').hasTagName('p');
   });
 });
