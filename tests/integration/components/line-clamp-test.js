@@ -843,4 +843,31 @@ module('Integration | Component | line clamp', function (hooks) {
       .dom('[data-test-line-clamp-show-more-button]')
       .isFocused('show more button is focused');
   });
+
+  test('tag name is <div> by default', async function (assert) {
+    assert.expect(1);
+
+    await render(hbs`
+      <div style="width: 300px; font-size: 16px; font-family: sans-serif;">
+        <LineClamp
+          @text="helloworld helloworld helloworld"
+        />
+      </div>`);
+
+    assert.dom('[data-test-line-clamp]').hasTagName('div');
+  });
+
+  test('tag name is able to be changed', async function (assert) {
+    assert.expect(1);
+
+    await render(hbs`
+      <div style="width: 300px; font-size: 16px; font-family: sans-serif;">
+        <LineClamp
+          @text="helloworld helloworld helloworld"
+          @tagName="p"
+        />
+      </div>`);
+
+    assert.dom('[data-test-line-clamp]').hasTagName('p');
+  });
 });

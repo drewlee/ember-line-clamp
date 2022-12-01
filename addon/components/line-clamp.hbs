@@ -1,59 +1,61 @@
-<div
-  class={{this._lineClampClass}}
-  style={{this._lineClampStyle}}
-  ...attributes
-  {{did-insert this.onDidInsert}}
-  {{did-update this.onDidUpdate this.truncate}}
-  data-test-line-clamp
-  >
-  {{#each this._textLines as |line|}}
-    {{#if line.lastLine}}
-      <span class="lt-line-clamp__line lt-line-clamp__line--last">
-        {{line.text}}
-        {{~#if line.needsEllipsis~}}
-          <span class="lt-line-clamp__ellipsis">
-            <div class="lt-line-clamp__dummy-element">{{this.ellipsis}}</div>
-            {{!-- Use div to wrap the ellipsis up so that the see more button can work after google translates the page (Issue #48)--}}
-            {{#if this._showMoreButton}}
-              <a
-                data-test-line-clamp-show-more-button="true"
-                href="#"
-                role="button"
-                id="line-clamp-show-more-button"
-                aria-expanded="false"
-                aria-label={{@seeMoreA11yText}}
-                class="lt-line-clamp__more"
-                {{on 'click' this.toggleTruncate}}
-                >{{this.seeMoreText}}</a>
-            {{/if}}
-          </span>
-        {{~/if~}}
-      </span>
-    {{else if line.newLine}}
-      <br />
-    {{else}}
-      <span class="lt-line-clamp__line">{{line.text}}</span>
-    {{/if}}
-  {{else if this._strippedText}}
-    {{this._strippedText}}
-  {{else}}
-    <span class="lt-line-clamp__raw-line">{{this.text}}</span>
-  {{/each}}
-
-  {{#if this._showLessButton}}
-    {{#unless this._truncated}}
-      {{#if this._expanded}}
-        <span><a
-            data-test-line-clamp-show-less-button="true"
-            id="line-clamp-show-less-button"
-            href="#"
-            role="button"
-            aria-expanded="true"
-            aria-label={{@seeLessA11yText}}
-            class="lt-line-clamp__less"
-            {{on 'click' this.toggleTruncate}}
-            >{{this.seeLessText}}</a></span>
+{{#let (element (if @tagName @tagName "div")) as |Tag|}}
+  <Tag
+    class={{this._lineClampClass}}
+    style={{this._lineClampStyle}}
+    ...attributes
+    {{did-insert this.onDidInsert}}
+    {{did-update this.onDidUpdate this.truncate}}
+    data-test-line-clamp
+    >
+    {{#each this._textLines as |line|}}
+      {{#if line.lastLine}}
+        <span class="lt-line-clamp__line lt-line-clamp__line--last">
+          {{line.text}}
+          {{~#if line.needsEllipsis~}}
+            <span class="lt-line-clamp__ellipsis">
+              <div class="lt-line-clamp__dummy-element">{{this.ellipsis}}</div>
+              {{!-- Use div to wrap the ellipsis up so that the see more button can work after google translates the page (Issue #48)--}}
+              {{#if this._showMoreButton}}
+                <a
+                  data-test-line-clamp-show-more-button="true"
+                  href="#"
+                  role="button"
+                  id="line-clamp-show-more-button"
+                  aria-expanded="false"
+                  aria-label={{@seeMoreA11yText}}
+                  class="lt-line-clamp__more"
+                  {{on 'click' this.toggleTruncate}}
+                  >{{this.seeMoreText}}</a>
+              {{/if}}
+            </span>
+          {{~/if~}}
+        </span>
+      {{else if line.newLine}}
+        <br />
+      {{else}}
+        <span class="lt-line-clamp__line">{{line.text}}</span>
       {{/if}}
-    {{/unless}}
-  {{/if}}
-</div>
+    {{else if this._strippedText}}
+      {{this._strippedText}}
+    {{else}}
+      <span class="lt-line-clamp__raw-line">{{this.text}}</span>
+    {{/each}}
+
+    {{#if this._showLessButton}}
+      {{#unless this._truncated}}
+        {{#if this._expanded}}
+          <span><a
+              data-test-line-clamp-show-less-button="true"
+              id="line-clamp-show-less-button"
+              href="#"
+              role="button"
+              aria-expanded="true"
+              aria-label={{@seeLessA11yText}}
+              class="lt-line-clamp__less"
+              {{on 'click' this.toggleTruncate}}
+              >{{this.seeLessText}}</a></span>
+        {{/if}}
+      {{/unless}}
+    {{/if}}
+  </Tag>
+{{/let}}
