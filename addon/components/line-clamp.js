@@ -1,6 +1,5 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { htmlSafe, isHTMLSafe } from '@ember/template';
 import { scheduleOnce } from '@ember/runloop';
@@ -76,8 +75,6 @@ const HTML_ENTITIES_TO_CHARS = {
  * @class LineClampComponent
  */
 export default class LineClampComponent extends Component {
-  @service('unified-event-handler') unifiedEventHandler;
-
   /**
    * Text to truncate/clamp
    * @type {String}
@@ -354,7 +351,6 @@ export default class LineClampComponent extends Component {
       this.element.appendChild(this.dummyEllipsisElement);
 
       this._calculateTargetWidth();
-      this._bindResize();
     }
     this.onDidUpdate();
   }
@@ -364,7 +360,6 @@ export default class LineClampComponent extends Component {
       this.element.removeChild(this.dummyEllipsisElement);
     }
 
-    this._unbindResize();
     window.cancelAnimationFrame(this._scheduledResizeAnimationFrame);
 
     super.willDestroy(...arguments);
@@ -476,30 +471,6 @@ export default class LineClampComponent extends Component {
     this.dummyEllipsisElement.innerHTML = this._isInteractive
       ? `${this.ellipsis} <a class="${MORE_CLASS}" href="#" role="button">${this.seeMoreText}</a>`
       : this.ellipsis;
-  }
-
-  /**
-   * Binds/registers resize listener
-   * @method _bindResize
-   * @return {Void}
-   * @private
-   */
-  _bindResize() {
-    this.unifiedEventHandler.register('window', 'resize', this.onResize);
-    this._resizeHandlerRegistered = true;
-  }
-
-  /**
-   * Unbinds/Unregisters resize listener in 'willDestroy'
-   * @method _unbindResize
-   * @return {Void}
-   * @private
-   */
-  _unbindResize() {
-    if (this._resizeHandlerRegistered) {
-      this.unifiedEventHandler.unregister('window', 'resize', this.onResize);
-      this._resizeHandlerRegistered = false;
-    }
   }
 
   /**
