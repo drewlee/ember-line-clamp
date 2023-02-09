@@ -35,7 +35,7 @@
     "ember-cli-babel": "^7.26.11",
     "ember-cli-htmlbars": "^6.1.1",
     "ember-element-helper": "^0.6.1",
-    "ember-singularity": "^2.0.0",
+    "ember-resize-modifier": "^0.6.0",
     "ember-test-selectors": "^6.0.0"
   },
   "devDependencies": {
