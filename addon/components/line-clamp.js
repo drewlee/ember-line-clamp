@@ -3,6 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { htmlSafe, isHTMLSafe } from '@ember/template';
 import { scheduleOnce } from '@ember/runloop';
+import { debug } from '@ember/debug';
 import { mutateDOM } from 'ember-batcher';
 import DidResizeModifier from 'ember-resize-modifier/modifiers/did-resize';
 
@@ -375,6 +376,10 @@ export default class LineClampComponent extends Component {
   }
 
   onResize() {
+    // This is used to allow us to "spy" on this function for testing purposes
+    if (debug && this.args.onResizeSpy) {
+      this.args.onResizeSpy();
+    }
     if (this._scheduledResizeAnimationFrame) {
       window.cancelAnimationFrame(this._scheduledResizeAnimationFrame);
     }

@@ -1,8 +1,26 @@
 import { hbs } from 'ember-cli-htmlbars';
 import { htmlSafe } from '@ember/string';
-import { module, skip, test } from 'qunit';
+import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render, click } from '@ember/test-helpers';
+import { render, click, triggerEvent } from '@ember/test-helpers';
+import sinon from 'sinon';
+
+/**
+ * Pauses the test until the resize has settled and then calls a callback with assertions
+ * TODO: Use ember-test-waiters and do this properly
+ */
+function waitForResizeRAF(assert, callback) {
+  const done = assert.async();
+
+  setTimeout(() => {
+    requestAnimationFrame(() =>
+      requestAnimationFrame(function () {
+        done();
+        callback();
+      })
+    );
+  }, 5000);
+}
 
 module('Integration | Component | line clamp', function (hooks) {
   setupRenderingTest(hooks);
@@ -475,9 +493,8 @@ module('Integration | Component | line clamp', function (hooks) {
       );
   });
 
-  skip('resizing triggers component to re-truncate', async function (assert) {
-    assert.expect(4);
-    const done = assert.async();
+  test('resizing triggers component to re-truncate', async function (assert) {
+    assert.expect(5);
 
     await render(hbs`<div id="test-conatiner" style="width: 300px; font-size: 16px; font-family: sans-serif;">
       <LineClamp
@@ -486,49 +503,70 @@ module('Integration | Component | line clamp', function (hooks) {
     </div>`);
 
     const element = this.element;
-    const seeMoreButtonBeforeResize = element.querySelectorAll(
-      '.lt-line-clamp__line .lt-line-clamp__more'
-    );
 
     assert.ok(element, 'line clamp target exists');
 
-    assert.strictEqual(
-      seeMoreButtonBeforeResize.length,
-      1,
-      'see more button exists'
-    );
+    assert
+      .dom('.lt-line-clamp__line .lt-line-clamp__more')
+      .exists({ count: 1 }, 'see more button exists');
 
     assert.dom(element).containsText('... See More');
 
     // Mimic window resize
     element.querySelector('#test-conatiner').style.width = '960px';
-    window.dispatchEvent(new CustomEvent('resize'));
+    await triggerEvent(window, 'resize');
 
-    setTimeout(() => {
-      const seeMoreButtonAfterResize = element.querySelectorAll(
-        '.lt-line-clamp__line .lt-line-clamp__more'
-      );
-
+    waitForResizeRAF(assert, function () {
+      assert.dom('.lt-line-clamp__line .lt-line-clamp__more').doesNotExist();
       assert.strictEqual(
-        seeMoreButtonAfterResize.length,
-        0,
-        'see more button does not exist'
+        element.innerText.trim(),
+        'helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld',
+        'text is correct after resize'
       );
+    });
+  });
 
-      done();
-    }, 10);
-    // const seeMoreButtonAfterResize = element.querySelectorAll('.lt-line-clamp__line .lt-line-clamp__more');
+  test('When using native CSS clamping, onResize is not called', async function (assert) {
+    assert.expect(1);
 
-    // assert.equal(
-    //   seeMoreButtonAfterResize.length,
-    //   0,
-    //   'see more button does not exist'
-    // );
+    const onResizeSpy = sinon.spy();
+    this.onResizeSpy = onResizeSpy;
 
-    // assert.equal(
-    //   element.innerText.trim(),
-    //   'helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld'
-    // );
+    await render(hbs`
+      <div id="test-conatiner" style="width: 300px; font-size: 16px; font-family: sans-serif;">
+        <LineClamp
+          @useJsOnly={{false}}
+          @interactive={{false}}
+          @onResizeSpy={{this.onResizeSpy}}
+          @text="helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld"
+        />
+      </div>
+    `);
+
+    waitForResizeRAF(assert, function () {
+      assert.strictEqual(onResizeSpy.callCount, 0);
+    });
+  });
+
+  test('When using JS clamping, onResize is called', async function (assert) {
+    assert.expect(1);
+
+    const onResizeSpy = sinon.spy();
+    this.onResizeSpy = onResizeSpy;
+
+    await render(hbs`
+      <div id="test-conatiner" style="width: 300px; font-size: 16px; font-family: sans-serif;">
+        <LineClamp
+          @useJsOnly={{true}}
+          @onResizeSpy={{this.onResizeSpy}}
+          @text="helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld"
+        />
+      </div>
+    `);
+
+    waitForResizeRAF(assert, function () {
+      assert.strictEqual(onResizeSpy.callCount, 1);
+    });
   });
 
   test('clicking see more/see less button fires user defined action', async function (assert) {
