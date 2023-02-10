@@ -4,6 +4,7 @@ import { action } from '@ember/object';
 import { htmlSafe, isHTMLSafe } from '@ember/template';
 import { scheduleOnce } from '@ember/runloop';
 import { mutateDOM } from 'ember-batcher';
+import DidResizeModifier from 'ember-resize-modifier/modifiers/did-resize';
 
 const LINE_CLAMP_CLASS = 'lt-line-clamp';
 const SINGLE_LINE_CLAMP_CLASS = htmlSafe(
@@ -215,6 +216,14 @@ export default class LineClampComponent extends Component {
    */
   get _shouldUseNativeTextOverflowCSS() {
     return this.useJsOnly ? false : !this._isInteractive && this.lines === 1;
+  }
+
+  /**
+   * Returns the reference to the `did-resize` modifier if we are not using native line clamping
+   * @return {DidResizeModifier | null}
+   */
+  get didResize() {
+    return this._shouldUseNativeLineClampCSS ? null : DidResizeModifier;
   }
 
   /**
