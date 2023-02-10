@@ -3,7 +3,9 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { htmlSafe, isHTMLSafe } from '@ember/template';
 import { scheduleOnce } from '@ember/runloop';
+import { debug } from '@ember/debug';
 import { mutateDOM } from 'ember-batcher';
+import DidResizeModifier from 'ember-resize-modifier/modifiers/did-resize';
 
 const LINE_CLAMP_CLASS = 'lt-line-clamp';
 const SINGLE_LINE_CLAMP_CLASS = htmlSafe(
@@ -218,6 +220,14 @@ export default class LineClampComponent extends Component {
   }
 
   /**
+   * Returns the reference to the `did-resize` modifier if we are not using native line clamping
+   * @return {DidResizeModifier | null}
+   */
+  get didResize() {
+    return this._shouldUseNativeLineClampCSS ? null : DidResizeModifier;
+  }
+
+  /**
    * Based on showMoreButton and interactive flags
    * @type {Boolean}
    * @private
@@ -366,6 +376,10 @@ export default class LineClampComponent extends Component {
   }
 
   onResize() {
+    // This is used to allow us to "spy" on this function for testing purposes
+    if (debug && this.args.onResizeSpy) {
+      this.args.onResizeSpy();
+    }
     if (this._scheduledResizeAnimationFrame) {
       window.cancelAnimationFrame(this._scheduledResizeAnimationFrame);
     }
